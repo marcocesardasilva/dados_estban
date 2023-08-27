@@ -62,16 +62,20 @@ def extract(staging_area,data_update):
                 os.remove(f'{staging_area}/{file}')
             except OSError as e:
                 print(f"Error:{ e.strerror}")
+        else:
+            print(f'Não foi possível baixar o arquivo {file}.')
+            print('-----------------------------------------------------------------')
+            return False
         
         return True
 
 def transform(staging_area,data_update):
-
     print('-----------------------------------------------------------------')
     print('Transformação de dados')
     print('-----------------------------------------------------------------')
     print('Realizando as transformações necessárias nos dados...')
-    # Defir o arquivo que será lido
+
+    # Definir o arquivo que será lido
     filename = f'{data_update}_ESTBAN.CSV'
     # Ler o arquivo
     df = pd.read_csv(os.path.join(staging_area, filename), delimiter=';', encoding='ISO-8859-1', skiprows=2)
@@ -80,25 +84,24 @@ def transform(staging_area,data_update):
     # Filtrar os municípios
     filtro_municipios = ['BLUMENAU', 'CHAPECO', 'CRICIUMA', 'ITAJAI', 'FLORIANOPOLIS']
     df = df[df['MUNICIPIO'].isin(filtro_municipios)]
-    # Renomar colunas
+    # Renomear colunas
     df = df.rename(columns={'#DATA_BASE': 'DATA_BASE'})
     # Selecionar as colunas desejadas
     df = df[['DATA_BASE','UF','MUNICIPIO','NOME_INSTITUICAO','VERBETE_160_OPERACOES_DE_CREDITO','VERBETE_420_DEPOSITOS_DE_POUPANCA','VERBETE_432_DEPOSITOS_A_PRAZO']]
-    print('Dataframe montado com sucesso para a carga dos dados.')
+    print('Dataframe criado com sucesso para a carga dos dados.')
     return df
 
 def load(data_folder,database,df_load):
-
     print('-----------------------------------------------------------------')
     print('Carga dos dados')
     print('-----------------------------------------------------------------')
 
-    # Verifica se existe o diretório para os dados, se não existe, criar
+    # Verificar se existe o diretório para os dados, se não existir, criar
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
     print(f'Carregando os dados no arquivo {database}...')
-    # Verificar se a base de dados já existe existe
+    # Verificar se a base de dados já existe
     if os.path.exists(f'{data_folder}/{database}'):
         # Se o arquivo já existe, adicionar dados sem o cabeçalho
         df_load.to_csv(os.path.join(data_folder, database), mode='a', header=False, index=False)

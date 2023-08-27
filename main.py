@@ -1,4 +1,4 @@
-# importar funões
+# Importar funções
 from funcoes import *
 
 # Definir variáveis
@@ -11,23 +11,22 @@ print('-----------------------------------------------------------------')
 print(f'Atualização da base {database}')
 print('-----------------------------------------------------------------')
 
-##########################################################################
-#                               Executar ETL                             #
-##########################################################################
+# Executar ETL
 while True:
-    # Verificar data de atualização
+    # Verificar data de atualização na tabela de controle
     data_update = update_date(data_folder,update_file)
+
     # Extrair dados da fonte
     if not extract(staging_area,data_update):
         break
 
-    # Ralizar as transformações nos dados
+    # Realizar as transformações nos dados
     df_load = transform(staging_area,data_update)
 
     # Salvar os dados no arquivo final
     load(data_folder,database,df_load)
 
-    # Atualiza tabela de controle de atualização
+    # Atualizar tabela de controle
     update_control(data_folder,update_file,data_update)
 
     # Deletar arquivo carregado
