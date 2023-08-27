@@ -93,6 +93,11 @@ def load(data_folder,database,df_load):
     print('Carga dos dados')
     print('-----------------------------------------------------------------')
 
+    # Verifica se existe o diretório para os dados, se não existe, criar
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+
+    print(f'Carregando os dados no arquivo {database}...')
     # Verificar se a base de dados já existe existe
     if os.path.exists(f'{data_folder}/{database}'):
         # Se o arquivo já existe, adicionar dados sem o cabeçalho
@@ -100,6 +105,7 @@ def load(data_folder,database,df_load):
     else:
         # Se o arquivo não existe, criar e salvar com cabeçalho
         df_load.to_csv(os.path.join(data_folder, database), index=False)
+    print(f'Dados carregados com sucesso no arquivo {database}.')
 
 def update_control(data_folder,update_file,data_update):
     print('-----------------------------------------------------------------')
@@ -108,4 +114,13 @@ def update_control(data_folder,update_file,data_update):
     df.to_csv(os.path.join(data_folder, update_file), index=False)
     print(f'Tabela {update_file} atualizada.')
     print('-----------------------------------------------------------------')
+
+def delete_file(staging_area,data_update):
+    # Define o arquivo a ser excluído
+    filename = f'{data_update}_ESTBAN.CSV'
+    # Remove o arquivo já carregado
+    try:
+        os.remove(f'{staging_area}/{filename}')
+    except OSError as e:
+        print(f"Error:{ e.strerror}")
 

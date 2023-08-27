@@ -30,6 +30,9 @@ while True:
     # Atualiza tabela de controle de atualização
     update_control(data_folder,update_file,data_update)
 
+    # Deletar arquivo carregado
+    delete_file(staging_area,data_update)
+
 print('-----------------------------------------------------------------')
 print("Fim da execução do programa!")
 print('-----------------------------------------------------------------')
