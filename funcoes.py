@@ -37,7 +37,7 @@ def extract(staging_area,data_update):
 
     # Verifica se o arquivo já foi baixado
     if os.path.exists(f'{staging_area}/{file}'):
-        print(f'Arquivo {file} já foi baixado baixado.')
+        print(f'Arquivo {file} já foi baixado.')
     else:
     # Tenta baixar o arquivo
         try:
