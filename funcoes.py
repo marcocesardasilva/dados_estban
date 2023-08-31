@@ -45,8 +45,7 @@ def extract(staging_area,data_update):
             request.urlretrieve(f'{link}', f'{staging_area}/{file}')
         except:
             print(f'Arquivo de {data_update} ainda não disponibilizado pela fonte.')
-            print('Todos os arquivos disponíveis foram baixados!')
-            print('-----------------------------------------------------------------')
+            print('Todos os arquivos disponíveis foram baixados!\n')
             return False
 
         # Verifica se o arquivo foi baixado
@@ -55,16 +54,14 @@ def extract(staging_area,data_update):
             # Descompacta o arquivo
             print(f'Descompactando o arquivo {file}...')
             Archive(f'{staging_area}/{file}').extractall(f'{staging_area}')
-            print(f'Arquivo {file} descompactando.')
-            print('-----------------------------------------------------------------')
+            print(f'Arquivo {file} descompactando.\n')
             # Remove o arquivo compactado
             try:
                 os.remove(f'{staging_area}/{file}')
             except OSError as e:
                 print(f"Error:{ e.strerror}")
         else:
-            print(f'Não foi possível baixar o arquivo {file}.')
-            print('-----------------------------------------------------------------')
+            print(f'Não foi possível baixar o arquivo {file}.\n')
             return False
         
         return True
@@ -111,12 +108,10 @@ def load(data_folder,database,df_load):
     print(f'Dados carregados com sucesso no arquivo {database}.')
 
 def update_control(data_folder,update_file,data_update):
-    print('-----------------------------------------------------------------')
     print(f'Atualizando a tabela {update_file}...')
     df = pd.DataFrame({'update_control': [data_update]})
     df.to_csv(os.path.join(data_folder, update_file), index=False)
     print(f'Tabela {update_file} atualizada.')
-    print('-----------------------------------------------------------------')
 
 def delete_file(staging_area,data_update):
     # Define o arquivo a ser excluído
